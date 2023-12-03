@@ -119,7 +119,48 @@ func day2Part2() int {
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
+		input := scanner.Text()
 
+		colIndex := strings.Index(input, ":")
+
+		// +1 to consume the space
+		var start = colIndex + 1
+		var cube = ""
+		var cubeCount = -1
+
+		var cubeMap = map[string]int{}
+
+		for i := start; i != len(input); i++ {
+			if input[i] == ' ' || input[i] == ',' || input[i] == ';' || i == len(input)-1 {
+				if unicode.IsDigit(rune(input[i-1])) {
+					_cubeCount, err := strconv.Atoi(input[start:i])
+					if err != nil {
+						panic(err)
+					}
+					cubeCount = _cubeCount
+				} else {
+					cube = input[start:i]
+				}
+
+				if i == len(input)-1 {
+					cube = input[start:]
+				}
+
+				if cubeCount != -1 && cube != "" {
+          if cubeMap[cube] < cubeCount {
+            cubeMap[cube] = cubeCount
+          }
+          cubeCount = -1
+          cube = ""
+				}
+				start = i + 1
+			}
+		}
+    var result=1
+    for cube := range cubeMap {
+        result *= cubeMap[cube]
+    }
+    sum += result
 	}
 
 	if err := scanner.Err(); err != nil {
