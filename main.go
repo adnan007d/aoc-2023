@@ -7,6 +7,7 @@ import (
 	"github.com/adnan007d/aoc-2023/day1"
 	"github.com/adnan007d/aoc-2023/day2"
 	"github.com/adnan007d/aoc-2023/day3"
+	"github.com/adnan007d/aoc-2023/day4"
 )
 
 func main() {
@@ -23,5 +24,7 @@ func main() {
 		day2.Day2()
 	case "3":
 		day3.Day3()
+	case "4":
+		day4.Day4()
 	}
 }
