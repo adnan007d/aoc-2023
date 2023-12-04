@@ -37,7 +37,7 @@ func day4Part1(inputs []string) int {
 		for i := start; i < len(input); i++ {
 			if unicode.IsDigit(rune(input[i])) {
 				start = i
-				for i<len(input) && unicode.IsDigit(rune(input[i])) {
+				for i < len(input) && unicode.IsDigit(rune(input[i])) {
 					i++
 				}
 				setIntersection[input[start:i]] += 1
@@ -60,7 +60,61 @@ func day4Part1(inputs []string) int {
 }
 
 func day4Part2(inputs []string) int {
-	return 0
+	var sum = 0
+
+	var cardCopies = map[int]int{}
+
+	for row, input := range inputs {
+		cardId := row + 1
+		cardCopies[cardId] += 1
+
+		// can use split and shit but it will be too easy
+		startOfPoints := strings.Index(input, ":")
+
+		setIntersection := map[string]int{}
+
+		start := startOfPoints + 1
+
+		for i := start; input[i] != '|'; i++ {
+			if unicode.IsDigit(rune(input[i])) {
+				start = i
+				for unicode.IsDigit(rune(input[i])) {
+					i++
+				}
+				setIntersection[input[start:i]] += 1
+				start = i + 1
+			}
+		}
+
+		start += 2
+
+		for i := start; i < len(input); i++ {
+			if unicode.IsDigit(rune(input[i])) {
+				start = i
+				for i < len(input) && unicode.IsDigit(rune(input[i])) {
+					i++
+				}
+				setIntersection[input[start:i]] += 1
+				start = i + 1
+			}
+		}
+
+		var n = 0
+		for _, points := range setIntersection {
+			if points == 2 {
+				n++
+			}
+		}
+
+		for i := 0; i < n; i++ {
+			cardCopies[cardId+i+1] += cardCopies[cardId]
+		}
+	}
+
+	for _, copiesCount := range cardCopies {
+		sum += copiesCount
+	}
+	return sum
 }
 
 func Day4() {
